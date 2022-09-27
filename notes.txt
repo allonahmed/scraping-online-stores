@@ -1,0 +1,8 @@
+-web scraping is the process of gathering information from the internet usually involving automation
+
+-keep in mind that some websites dont like when automatic scrapers gather their data, while others don't mind
+be sure to check terms of service
+
+-challenges: every site is different due to so many different technologies and age of the internet. 
+And even if you are successfully able to scrape a certain site... it could end up breaking the next day if
+updates are made.
