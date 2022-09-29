@@ -30,4 +30,6 @@ results_container = soup.find(id = 'ResultsContainer')
 card_content = results_container.find_all('div', class_ = 'card-content')
 
 for card in card_content:
-  print(card.prettify(), end = '\n'*3)
+  image = card.find('img')
+  print(image['src'])
+  # print(card.prettify(), end = '\n'*3)
