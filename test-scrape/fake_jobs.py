@@ -24,12 +24,24 @@ def getSiteContent(url):
 
 HTML_content = getSiteContent(SITE_URL)
 
-soup = BeautifulSoup(HTML_content, 'html.parser')
+#create beautiful soup object for parsing web content
+soup = BeautifulSoup(HTML_content, 'html.parser') 
 
+# we can navigate through the html content through the find and find_all method which 
+# creates new BeautifulSoup objects 
 results_container = soup.find(id = 'ResultsContainer')
 card_content = results_container.find_all('div', class_ = 'card-content')
 
-for card in card_content:
-  image = card.find('img')
-  print(image['src'])
-  # print(card.prettify(), end = '\n'*3)
+#example for extracting all images from page
+def getImageSource():
+  images = soup.find_all('img')
+  results = []
+  for index, image in enumerate(images, start = 1):
+    print('image {}: {}'.format(index, image['src']))
+
+getImageSource()
+
+# for card in card_content:
+#   print(card.prettify(), end = '\n'*3)  
+
+#
