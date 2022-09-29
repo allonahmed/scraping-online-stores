@@ -51,3 +51,8 @@ def getContentCardInformation():
     print(f'company:  {company_element.text.strip()}')
     print(f'location: {location_element.text.strip()}', end = '\n'*2)    
 
+# example of passing a function to a BS method... using lambda
+python_jobs = soup.find_all(
+    "h2", string = lambda text: 'python' in text.lower()
+)
+
