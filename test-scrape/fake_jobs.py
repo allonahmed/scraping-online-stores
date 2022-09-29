@@ -7,12 +7,13 @@ from bs4 import BeautifulSoup
 #site url of demo site we want to scrape
 SITE_URL = 'https://realpython.github.io/fake-jobs/'
 
-def getSiteContent(url):
+def Get_HTML_Content(url):
   try:
     response = requests.get(SITE_URL)
     # If the response was successful, no Exception will be raised
     response.raise_for_status()
 
+  #returns err if api_url is invalid
   except HTTPError as http_err:
     return { 'http Error': f'HTTP error occurred: {http_err}' }
 
@@ -22,20 +23,20 @@ def getSiteContent(url):
   else:
     return response.content
 
-HTML_content = getSiteContent(SITE_URL)
+HTML_content = Get_HTML_Content(SITE_URL)
 
 # create beautiful soup object for parsing web content
 soup = BeautifulSoup(HTML_content, 'html.parser') 
 
 # example for extracting all images from page
-def getImageSource():
+def Get_Image_Source():
   images = soup.find_all('img')
   results = []
   for index, image in enumerate(images, start = 1):
     print('image {}: {}'.format(index, image['src']))
 
 # example function of parsing content and getting specific data from html
-def getContentCardInformation():
+def Get_Content_Card_Info():
   # we can navigate through the html content through the find and find_all method which 
   # creates new BeautifulSoup objects 
   results_container = soup.find(id = 'ResultsContainer')
@@ -51,8 +52,11 @@ def getContentCardInformation():
     print(f'company:  {company_element.text.strip()}')
     print(f'location: {location_element.text.strip()}', end = '\n'*2)    
 
-# example of passing a function to a BS method... using lambda
+# example of passing a function to a BS method... using lambda functions
+# here we returning all h2 elements that contain the string python ( we use the lambda to lower case 
+# the entire string to prevent casing errors )
 python_jobs = soup.find_all(
     "h2", string = lambda text: 'python' in text.lower()
 )
 
+print(python_jobs)
