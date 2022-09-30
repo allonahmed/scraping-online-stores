@@ -58,5 +58,3 @@ def Get_Content_Card_Info():
 python_jobs = soup.find_all(
     "h2", string = lambda text: 'python' in text.lower()
 )
-
-print(python_jobs)
