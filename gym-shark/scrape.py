@@ -28,4 +28,15 @@ HTML_content = Get_HTML_Content(SITE_URL)
 # create beautiful soup object for parsing web content
 soup = BeautifulSoup(HTML_content, 'html.parser') 
 
-print (soup)
+def getAllElements(type):
+  return soup.find_all(type)
+
+def getProduct():
+  results = soup.find(class_ = 'Styles__Grid-sc-1hr3n2q-0 ekxOoE')
+  print(results.prettify() if results else 'no results')
+
+getProduct()
+
+# print(getAllElements('div'))
+
+print(soup.find('div', id='MainContent'))
