@@ -1,13 +1,22 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+
+# instantiate options to be passed to chrome web driver
+options = Options()
+options.headless = False # setting this to true to avoid opening browser gui
+options.add_argument("--window-size=800,600") # additional arguments 
 
 # connect instance of Chrome webdriver
-driver = webdriver.Chrome(executable_path='../../../Downloads/chromedriver')
+driver = webdriver.Chrome(options = options, executable_path = '../../../Downloads/chromedriver')
 
 # driver will then navigate to the url
 URL = "http://www.python.org"
 driver.get(URL)
+
+# access the webpage html document
+print(driver.page_source)
 
 # assertion to confirm the title of the web application
 assert "Python" in driver.title
@@ -26,5 +35,5 @@ elem.send_keys(Keys.RETURN)
 assert "No results found." not in driver.page_source
 
 # exit the browser (could use close method to close the single tab that was open)
-driver.quit()
+# driver.quit()
 
