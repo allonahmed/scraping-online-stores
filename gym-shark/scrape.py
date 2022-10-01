@@ -1,42 +1,60 @@
-import requests
-from requests.exceptions import HTTPError
-from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
+import time 
 
-# ***NOTE*** this demo is intended for static websites only
+# instantiate options to be passed to chrome web driver
+options = Options()
+options.headless = False # setting this to true to avoid opening browser gui
+options.add_argument("--window-size=1900,1200") # additional arguments 
+options.add_argument("--auto-open-devtools-for-tabs");
 
-#site url of demo site we want to scrape
-SITE_URL = 'https://www.gymshark.com/collections/all-products/mens?collections=t-shirts-tops%2Cstringers%2Ctanks%2Choodies-jackets'
+# connect instance of Chrome webdriver
+driver = webdriver.Chrome(options = options, executable_path = '../../../Downloads/chromedriver')
 
-def Get_HTML_Content(url):
-  try:
-    response = requests.get(SITE_URL)
-    # If the response was successful, no Exception will be raised
-    response.raise_for_status()
+# driver will then navigate to the url
+SITE_URL = "https://www.gymshark.com/collections/all-products/mens"
 
-  #returns err if api_url is invalid
-  except HTTPError as http_err:
-    return { 'http Error': f'HTTP error occurred: {http_err}' }
+driver.get(SITE_URL)
 
-  except Exception as err:
-    return { 'Exception message': f'Other error occurred: {err}' }
+# access the webpage html document
+def display_page_source():
+  assert driver.page_source, 'No results found'
+  return driver.page_source
 
-  else:
-    return response.content
+# wait = WebDriverWait(driver, 10)
+# popup = wait.until(ec.visibility_of_element_located(('xpath', '/html/body/div[2]/div/main/div/div/div/div[1]/div/form/div[2]/button[2]')))
 
-HTML_content = Get_HTML_Content(SITE_URL)
+time.sleep(5)
 
-# create beautiful soup object for parsing web content
-soup = BeautifulSoup(HTML_content, 'html.parser') 
+iframe = driver.find_element('xpath', '//*[@id="attentive_creative"]')
+driver.switch_to.frame(iframe)
+driver.find_element('xpath', '/html/body/div[2]/div/main/div/div/div/div[1]/div/form/div[2]/button[2]').click()
+driver.switch_to.default_content()
 
-def getAllElements(type):
-  return soup.find_all(type)
+time.sleep(3)
+# accessing load button so we can reach end of page before getting all of our data
+lm_button = driver.find_element('xpath' ,'//*[@id="portal-collection"]/section/button')
 
-def getProduct():
-  results = soup.find(class_ = 'Styles__Grid-sc-1hr3n2q-0 ekxOoE')
-  print(results.prettify() if results else 'no results')
+for i in range(0,11):
+  time.sleep(2)
+  driver.execute_script("arguments[0].scrollIntoView();", lm_button)
+  print('clicked')
+  lm_button.click()
 
-getProduct()
+#to add delay (useful for waiting for server/api loading)
+time.sleep(3)
 
-# print(getAllElements('div'))
+# using the find_element method to find elements. You can search by name, class, etc
+# more details: https://selenium-python.readthedocs.io/locating-elements.html#locating-elements
+elem = driver.find_elements(By.ID, "product-schema")
+for i in elem: 
+  print(i.get_attribute('innerHTML'))
 
-print(soup.find('div', id='MainContent'))
+print('amount of items:', len(elem))
+
+driver.quit()
+
