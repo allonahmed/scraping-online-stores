@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.options import Options
 
 # instantiate options to be passed to chrome web driver
 options = Options()
-options.headless = False # setting this to true to avoid opening browser gui
+options.headless = True # setting this to true to avoid opening browser gui
 options.add_argument("--window-size=800,600") # additional arguments 
 
 # connect instance of Chrome webdriver
@@ -16,10 +16,14 @@ URL = "http://www.python.org"
 driver.get(URL)
 
 # access the webpage html document
-print(driver.page_source)
-
-# assertion to confirm the title of the web application
-assert "Python" in driver.title
+def display_page_source():
+  assert driver.page_source, 'No results found'
+  return driver.page_source
+print('page source: ', display_page_source())
+# access the website title
+print('page title: ', driver.title)
+# acces the current URL (could be useful in the case of redirects)
+print('page current URL: ', driver.current_url)
 
 # using the find_element method to find elements. You can search by name, class, etc
 # more details: https://selenium-python.readthedocs.io/locating-elements.html#locating-elements
@@ -31,9 +35,6 @@ elem.clear()
 elem.send_keys("pycon")
 elem.send_keys(Keys.RETURN)
 
-#checks if we get any results
-assert "No results found." not in driver.page_source
-
 # exit the browser (could use close method to close the single tab that was open)
-# driver.quit()
+driver.quit()
 
