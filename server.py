@@ -1,10 +1,14 @@
+import os
 from flaskext.mysql import MySQL
 from flask import Flask
 from flask_cors import CORS, cross_origin # prevent cors policy blocks
 import logging # useful for logging info
-import os
+from dotenv import load_dotenv
 
-#config for logging server informations
+# take environment variables from .env.
+load_dotenv() 
+
+# config for logging server informations
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('HELLO WORLD')
 
@@ -18,10 +22,10 @@ mysql.init_app(app)
 # test function
 @app.route('/', methods=['GET'])
 def hello_world():
-  return 'Hello World!'
+  return 'hello world'
 
 if __name__ == "__main__":
-    app.secret_key = os.urandom(24)
+    app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
     app.run(debug = True, host = "0.0.0.0", port = 9000, use_reloader = True)
 
 flask_cors.CORS(app, expose_headers='Authorization')
