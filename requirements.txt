@@ -3,3 +3,4 @@ flask-mysql
 flask-cors
 python-dotenv
 flask-mysqldb
+selenium

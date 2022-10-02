@@ -1,4 +1,7 @@
 import os
+import sys
+sys.path.insert(0, '/Users/allon/pwa/scraping-online-stores/gym-shark/')
+from scrape import gym_shark_scrape
 from flask_mysqldb import MySQL
 from flask import Flask
 from flask_cors import CORS, cross_origin # prevent cors policy blocks
@@ -27,14 +30,17 @@ app.config.update({
 mysql = MySQL(app)
 
 # test function
-@app.route('/', methods=['GET'])
-def hello_world():
+@app.route('/get-gymshark', methods=['GET'])
+def get_gym_shark():
+
   # create cursor connection
   cursor = mysql.connection.cursor()
-  cursor.execute(''' INSERT INTO scrape_data.gym_shark VALUES (%s,%s)''', (3, 'Allonie'))
+
+  cursor.execute(''' INSERT INTO scrape_data.gym_shark VALUES (%s,%s)''', (5, 'Allonie'))
   mysql.connection.commit()
   cursor.close()
-  return f"Done!!"
+  response = gym_shark_scrape()
+  return response
 
 if __name__ == "__main__":
     app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
