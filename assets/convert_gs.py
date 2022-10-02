@@ -4,11 +4,12 @@ import json
 
 def convert_data(content):
   try:
-    data = json.loads(content)
+    print('content', content)
+    # data = json.loads(content)
     results = []
-    for i in data:
+    for index, element in enumerate(content):
       # converts each element into dict for parsing
-      x = json.loads(i)
+      x = json.loads(element)
       # data we want to send to our db
       dict = {
         'organization': x.get('offers').get('seller').get('name'),
@@ -18,9 +19,10 @@ def convert_data(content):
         'price': x.get('offers').get('price'),
         'availability': x.get('offers').get('availability'),
         'sku': x.get('sku'),
-        'description': x.get('description')
+        'description': x.get('description'),
+        'id': index
       }
       results.append(dict)
-  return results
+    return results
   except ValueError:
     return 'error'
