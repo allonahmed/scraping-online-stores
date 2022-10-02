@@ -37,7 +37,7 @@ driver.switch_to.frame(iframe)
 
 # click the close popup button
 driver.find_element('xpath', '/html/body/div[2]/div/main/div/div/div/div[1]/div/form/div[2]/button[2]').click()
-
+print('closed popup')
 # switch back to our default driver
 driver.switch_to.default_content()
 
@@ -52,12 +52,14 @@ def does_element_exists(xpath):
   return True
 
 while(does_element_exists('//*[@id="portal-collection"]/section/button')):
+  time.sleep(3)
   button = driver.find_element('xpath' ,'//*[@id="portal-collection"]/section/button')
-  # driver.execute_script("arguments[0].scrollIntoView();", button)
-  actions.move_to_element(button).perform()
+  time.sleep(2)
+  driver.execute_script("arguments[0].scrollIntoView();", button)
+  # actions.move_to_element(button).perform()
   button.click()
   print('clicked')
-  time.sleep(3)
+  
 
 # for i in range(0,11):
 #   time.sleep(2)
