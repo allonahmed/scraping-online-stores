@@ -31,22 +31,23 @@ app.config.update({
 # mysql db instance
 mysql = MySQL(app)
 
-# test function
+# gets gymshark data and stores it into our db
+# todo... add error handling for when things break 
 @app.route('/get-gymshark', methods=['GET'])
 def get_gym_shark():
-  # create cursor connection
+  # run scrape to get gym shark data
   response = gym_shark_scrape()
-  # print(response)
+  # extract specific data that we want in our db
   final_response = convert_data(response)
-  print(final_response)
+  # create cursor connection
   cursor = mysql.connection.cursor()
   query = 'INSERT INTO scrape_data.gym_shark VALUES (%(organization)s, %(brand)s, %(url)s, %(img_url)s, %(price)s, %(availability)s, %(sku)s, %(description)s, %(id)s )'
+  # process executes a bulk query using our new data
   cursor.executemany(query, final_response)
   mysql.connection.commit()
+  #closes the connection
   cursor.close()
-
-
-  return "done"
+  return "completed"
 
 if __name__ == "__main__":
     app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
