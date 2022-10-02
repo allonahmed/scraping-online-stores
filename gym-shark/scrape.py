@@ -21,6 +21,8 @@ driver = webdriver.Chrome(options = options, executable_path = '../../../Downloa
 SITE_URL = "https://www.gymshark.com/collections/all-products/mens"
 
 driver.get(SITE_URL)
+
+# for adding action commands to driver
 actions = ActionChains(driver)
 
 # access the webpage html document
@@ -41,9 +43,7 @@ print('closed popup')
 # switch back to our default driver
 driver.switch_to.default_content()
 
-# accessing load button so we can reach end of page before getting all of our data
-# lm_button = driver.find_element('xpath' ,'//*[@id="portal-collection"]/section/button')
-
+# boolean that checks for a xpath's existence
 def does_element_exists(xpath):
   try:
     driver.find_element('xpath', xpath)
@@ -51,22 +51,17 @@ def does_element_exists(xpath):
     return False
   return True
 
+# accessing load button so we can reach end of page before getting all of our data
+# and continously clicking it while it exists
 while(does_element_exists('//*[@id="portal-collection"]/section/button')):
   time.sleep(3)
-  button = driver.find_element('xpath' ,'//*[@id="portal-collection"]/section/button')
+  load_button = driver.find_element('xpath' ,'//*[@id="portal-collection"]/section/button')
   time.sleep(2)
-  driver.execute_script("arguments[0].scrollIntoView();", button)
-  # actions.move_to_element(button).perform()
-  button.click()
-  print('clicked')
+  # scrolls to location of element
+  driver.execute_script("arguments[0].scrollIntoView();", load_button)
+  # clicks button
+  load_button.click()
   
-
-# for i in range(0,11):
-#   time.sleep(2)
-#   driver.execute_script("arguments[0].scrollIntoView();", lm_button)
-#   print('clicked')
-#   lm_button.click()
-
 # using the find_element method to find elements. You can search by name, class, etc
 # more details: https://selenium-python.readthedocs.io/locating-elements.html#locating-elements
 elem = driver.find_elements(By.ID, "product-schema")
