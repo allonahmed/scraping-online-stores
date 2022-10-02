@@ -1,7 +1,9 @@
 import os
 import sys
 sys.path.insert(0, '/Users/allon/pwa/scraping-online-stores/gym-shark/')
+sys.path.insert(0, '/Users/allon/pwa/scraping-online-stores/assets/')
 from scrape import gym_shark_scrape
+from convert_gs import convert_data
 from flask_mysqldb import MySQL
 from flask import Flask
 from flask_cors import CORS, cross_origin # prevent cors policy blocks
@@ -40,7 +42,9 @@ def get_gym_shark():
   mysql.connection.commit()
   cursor.close()
   response = gym_shark_scrape()
-  return response
+  final_response = convert_data(response)
+  print(final_response)
+  return final_response
 
 if __name__ == "__main__":
     app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
