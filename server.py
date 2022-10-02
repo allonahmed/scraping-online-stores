@@ -34,17 +34,19 @@ mysql = MySQL(app)
 # test function
 @app.route('/get-gymshark', methods=['GET'])
 def get_gym_shark():
-
   # create cursor connection
-  cursor = mysql.connection.cursor()
-
-  cursor.execute(''' INSERT INTO scrape_data.gym_shark VALUES (%s,%s)''', (5, 'Allonie'))
-  mysql.connection.commit()
-  cursor.close()
   response = gym_shark_scrape()
+  # print(response)
   final_response = convert_data(response)
   print(final_response)
-  return final_response
+  cursor = mysql.connection.cursor()
+  query = 'INSERT INTO scrape_data.gym_shark VALUES (%(organization)s, %(brand)s, %(url)s, %(img_url)s, %(price)s, %(availability)s, %(sku)s, %(description)s, %(id)s )'
+  cursor.executemany(query, final_response)
+  mysql.connection.commit()
+  cursor.close()
+
+
+  return "done"
 
 if __name__ == "__main__":
     app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
