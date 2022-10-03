@@ -17,3 +17,6 @@ Typically when dealing with static sites, we only need to acces the html content
 meaning all we need to to use requests to get the site content and parse it using Beautiful Soup
 
 With Dynamic sites, where site data comes from the server, we will typically need to extract javascript data instead.
+
+
+### note for enviroment: activate conda to run to use flask mysql module

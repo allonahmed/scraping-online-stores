@@ -13,6 +13,7 @@ def convert_data(content):
       # data we want to send to our db
       dict = {
         'organization': x.get('offers').get('seller').get('name'),
+        'name': x.get('name'),
         'brand': x.get('brand').get('name'),
         'url': x.get('offers').get('url'),
         'img_url': x.get('image'),
