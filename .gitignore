@@ -1,2 +1,5 @@
 /selenium-test/chromedriver
 /selenium-test/chromedriver2
+/gym-shark/geckodriver.log
+/venv
+.env
