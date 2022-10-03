@@ -41,7 +41,7 @@ def get_gym_shark():
   final_response = convert_data(response)
   # create cursor connection
   cursor = mysql.connection.cursor()
-  query = 'INSERT INTO scrape_data.gym_shark VALUES (%(organization)s, %(brand)s, %(url)s, %(img_url)s, %(price)s, %(availability)s, %(sku)s, %(description)s, %(id)s )'
+  query = 'INSERT INTO scrape_data.gym_shark VALUES (%(organization)s, %(name)s, %(brand)s, %(url)s, %(img_url)s, %(price)s, %(availability)s, %(sku)s, %(description)s, %(id)s )'
   # process executes a bulk query using our new data
   cursor.executemany(query, final_response)
   mysql.connection.commit()
